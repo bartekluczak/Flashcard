@@ -36,9 +36,15 @@ class Group
      */
     private $flashCards;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Statistics::class, mappedBy="GroupId", orphanRemoval=true)
+     */
+    private $statistics;
+
     public function __construct()
     {
         $this->flashCards = new ArrayCollection();
+        $this->statistics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,6 +100,36 @@ class Group
             // set the owning side to null (unless already changed)
             if ($flashCard->getGroupId() === $this) {
                 $flashCard->setGroupId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Statistics[]
+     */
+    public function getStatistics(): Collection
+    {
+        return $this->statistics;
+    }
+
+    public function addStatistic(Statistics $statistic): self
+    {
+        if (!$this->statistics->contains($statistic)) {
+            $this->statistics[] = $statistic;
+            $statistic->setGroupId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStatistic(Statistics $statistic): self
+    {
+        if ($this->statistics->removeElement($statistic)) {
+            // set the owning side to null (unless already changed)
+            if ($statistic->getGroupId() === $this) {
+                $statistic->setGroupId(null);
             }
         }
 
