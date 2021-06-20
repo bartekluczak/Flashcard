@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -41,6 +43,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $login;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Group::class, mappedBy="UserId", orphanRemoval=true)
+     */
+    private $groups;
+
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +148,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLogin(string $login): self
     {
         $this->login = $login;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+            $group->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->removeElement($group)) {
+            // set the owning side to null (unless already changed)
+            if ($group->getUserId() === $this) {
+                $group->setUserId(null);
+            }
+        }
 
         return $this;
     }
