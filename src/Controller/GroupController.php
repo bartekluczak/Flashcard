@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Form\GroupType;
 use App\Repository\GroupRepository;
+use App\Helpers\MenuHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,11 @@ class GroupController extends AbstractController
     #[Route('/new', name: 'group_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
+        $menu = new MenuHelper(); 
+
         $group = new Group();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $group->setUserId($user);
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
 
