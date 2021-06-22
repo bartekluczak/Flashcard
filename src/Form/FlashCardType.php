@@ -15,7 +15,6 @@ class FlashCardType extends AbstractType
             ->add('Content')
             ->add('Translation')
             ->add('GroupId')
-            ->add('statistics')
         ;
     }
 

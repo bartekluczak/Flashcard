@@ -19,6 +19,24 @@ class FlashCardRepository extends ServiceEntityRepository
         parent::__construct($registry, FlashCard::class);
     }
 
+    public function findAll()
+    {
+        return $this->createQueryBuilder('f')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return FlashCard[] Returns an array of FlashCard objects
     //  */
