@@ -12,9 +12,22 @@
 		{% endblock %}
 	</head>
 	<body>
-		<div class="container">
+		<div class="container-fluid">
+			<div class="row">
+				{% if menu|default %}
+				<div class="col-3">
+				{% include('menu.html') %}
+				</div>
+				<div class="col-9">
+				{% else %}
+				<div class="col-12">
+				{% endif %}
+				<div class="row">
 				{% block body %}
+				</div>
 				{% endblock %}
+				</div>
+			</div>
 		</div>
 	{% block javascripts %}
 			<script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
