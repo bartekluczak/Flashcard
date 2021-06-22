@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FlashCard{% endblock %}
+
+{% block body %}
+    <h1>Edit FlashCard</h1>
+
+    {{ include('flash_card/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('flash_card_index') }}">back to list</a>
+
+    {{ include('flash_card/_delete_form.html.twig') }}
+{% endblock %}
