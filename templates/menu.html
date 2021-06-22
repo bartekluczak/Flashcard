@@ -1,0 +1,15 @@
+<col class="col-3">
+		<nav id="menu">
+			<ul>
+				{% for item in menu %}
+					<li>
+						<a href="{{item.url}}" {% if item.active == true %} style="color:red" {% endif%}>
+							{{item.name}}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		<nav>
+	</col>
+	<col>
+</col>

@@ -14,11 +14,19 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/group')]
 class GroupController extends AbstractController
 {
+    private $menu;
+    
+    function __construct() {
+        $menuHelper = new MenuHelper();
+        $this->menu = $menuHelper->getMenu('Groups');
+      }
+
     #[Route('/', name: 'group_index', methods: ['GET'])]
     public function index(GroupRepository $groupRepository): Response
     {
         return $this->render('group/index.html.twig', [
             'groups' => $groupRepository->findAll(),
+            'menu' => $this->menu
         ]);
     }
 
@@ -44,6 +52,7 @@ class GroupController extends AbstractController
         return $this->render('group/new.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
+            'menu' => $this->menu
         ]);
     }
 
@@ -52,6 +61,7 @@ class GroupController extends AbstractController
     {
         return $this->render('group/show.html.twig', [
             'group' => $group,
+            'menu' => $this->menu
         ]);
     }
 
@@ -70,6 +80,7 @@ class GroupController extends AbstractController
         return $this->render('group/edit.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
+            'menu' => $this->menu
         ]);
     }
 
