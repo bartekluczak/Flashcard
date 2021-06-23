@@ -1,15 +1,24 @@
-<col class="col-3">
-		<nav id="menu">
-			<ul>
+<nav id="menu" class="navbar navbar-expand-md navbar-dark bg-dark h-100 p-0">
+	<div class="container-fluid p-0">
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<div class="list-group list-group-flush flex-fill">
 				{% for item in menu %}
-					<li>
-						<a href="{{item.url}}" {% if item.active == true %} style="color:red" {% endif%}>
+					<div>
+						<a href="{{item.url}}" class="list-group-item list-group-item-action list-group-item-light fs-4 {% if item.active == true %} active {% endif%}" aria-current="true">
 							{{item.name}}
 						</a>
-					</li>
+					</div>
 				{% endfor %}
-			</ul>
-		<nav>
-	</col>
-	<col>
-</col>
+				{% if app.user %}
+					<div class="list-group-item list-group-item-action list-group-item-light fs-6 disabled">
+						Zalogowany jako:
+						{{ app.user.login }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</nav>
