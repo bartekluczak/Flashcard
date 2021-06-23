@@ -18,7 +18,7 @@ class GroupController extends AbstractController
     
     function __construct() {
         $menuHelper = new MenuHelper();
-        $this->menu = $menuHelper->getMenu('Groups');
+        $this->menu = $menuHelper->getMenu('Grupy');
       }
 
     #[Route('/', name: 'group_index', methods: ['GET'])]
