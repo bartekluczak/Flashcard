@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=FlashCardRepository::class)
+ * @ORM\Table(name="flashcard")
  */
 class FlashCard
 {
@@ -19,7 +20,7 @@ class FlashCard
 
     /**
      * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="flashCards")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $GroupId;
 
@@ -34,7 +35,7 @@ class FlashCard
     private $Translation;
 
     /**
-     * @ORM\OneToOne(targetEntity=Statistics::class, mappedBy="FlashCardId", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Statistics::class, mappedBy="FlashCardId")
      */
     private $statistics;
 

@@ -18,14 +18,14 @@ class Statistics
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Flashcard::class, inversedBy="statistics", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity=Flashcard::class, inversedBy="statistics")
+     * @ORM\JoinColumn(name="flashcard_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $FlashCardId;
 
     /**
      * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="statistics")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $GroupId;
 

@@ -27,17 +27,17 @@ class Group
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="groups")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $UserId;
 
     /**
-     * @ORM\OneToMany(targetEntity=FlashCard::class, mappedBy="GroupId", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=FlashCard::class, mappedBy="GroupId",)
      */
     private $flashCards;
 
     /**
-     * @ORM\OneToMany(targetEntity=Statistics::class, mappedBy="GroupId", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Statistics::class, mappedBy="GroupId",)
      */
     private $statistics;
 
