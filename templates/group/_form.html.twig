@@ -1,4 +1,11 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div style="width: 300px; margin-left: 5px; margin-bottom: 10px;">
+        <h6>Nazwa</h6>
+        {{ form_widget(form.Name, { 'attr': {'class': 'form-control'} }) }}
+    </div>
+    <div style="width: 300px; margin-left: 5px; margin-bottom: 10px;">
+        <h6>Opis</h6>
+        {{ form_widget(form.Description, { 'attr': {'class': 'form-control'} }) }}
+    </div>
+    <button class="btn btn-primary" style="width: 300px; margin: 5px;">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

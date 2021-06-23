@@ -6,6 +6,7 @@ use App\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class GroupType extends AbstractType
 {
@@ -13,7 +14,9 @@ class GroupType extends AbstractType
     {
         $builder
             ->add('Name')
-            #->add('UserID')
+            ->add('Description', TextareaType::class, [
+                'mapped' => true
+            ])
         ;
     }
 
