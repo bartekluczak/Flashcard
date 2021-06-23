@@ -25,6 +25,11 @@ class Group
      */
     private $Name;
 
+        /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Description;
+
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="groups")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
@@ -60,6 +65,18 @@ class Group
     public function setName(string $Name): self
     {
         $this->Name = $Name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(string $Description): self
+    {
+        $this->Description = $Description;
 
         return $this;
     }
