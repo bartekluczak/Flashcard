@@ -6,23 +6,38 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
+            {% if app.user %}
+            <div class="mb-3">
+                Jesteś zalogowany jako {{ app.user.login }}, <a href="{{ path('app_logout') }}">Wyloguj</a>
+                Lub przejdź do <a href='/group'> nauki</a>
+            </div>
+            {% endif %}
+            {% if not app.user %}
 
-    <h1>Rejestracja</h1>
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email, {
-            label: 'e-mail'
-        }) }}
-        {{ form_row(registrationForm.login, {
-            label: 'Nick'
-        }) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Hasło'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms, {
-            label: 'Zaakceptuj albo się pogniewamy dziunia'
-        }) }}
-
-        <button type="submit" class="btn">Rejestracja</button>
-    {{ form_end(registrationForm) }}
+            <h1 class="row justify-content-center mt-5 mb-4 font-weight-normal">Rejestracja</h1>
+            
+            <div class="container-fluid">
+                {{ form_start(registrationForm) }}
+                <div class="row justify-content-center mb-2">
+                    <div class="col col-lg-3 com-md-6 col-sm-9 mb-3 text-md-start">
+                    {{ form_label(registrationForm.email, 'e-mail') }}
+                    {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control'} }) }}
+                    
+                    {{ form_label(registrationForm.login, 'nick') }}
+                    {{ form_widget(registrationForm.login, { 'attr': {'class': 'form-control'} }) }}
+                   
+                    {{ form_label(registrationForm.plainPassword, 'Hasło') }}
+                    {{ form_widget(registrationForm.plainPassword, { 'attr': {'class': 'form-control'} }) }}
+                    
+                   
+                    {{ form_label(registrationForm.agreeTerms, 'Zaakceptuj regulamin') }}
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    
+                    <button type="submit" class="btn btn-primary mt-2 col-lg-12 col-md-12 col-sm-12">Zarejestruj</button>
+                    <a href="/login" class="btn btn-primary mt-2 col-lg-12 col-md-12 col-sm-12"> Zaloguj</a>
+                    </div>
+                </div>
+            </div>
+                {{ form_end(registrationForm) }}
+            {% endif %}
 {% endblock %}
