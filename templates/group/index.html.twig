@@ -1,37 +1,39 @@
 {% extends 'base.html.twig' %}
 {% set menu = menu %}
 
-{% block title %}Group index
+{% block title %}Grupy
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid">
 
-		<h1 class="mt-4">Grupy</h1>
-		<div class="d-flex flex-wrap">
-			{% for group in groups %}
-
+	<h1 class="mb-4">Grupy</h1>
+	<div class="row row-cols-auto">
+		<div class="col p-0">
+			<div class="card bg-dark text-light m-4" style="width: 20rem; height: 16rem; border-radius: 10px;">
+				<div class="card-body d-flex align-content-center">
+					<a href="{{ path('group_new') }}">
+						<img src="{{ asset('plus-icon.svg') }}" class="align-self-center flex-fill plus-icon" style="width: 12rem; height: 12rem;"/>
+					</a>
+				</div>
+			</div>
+		</div>
+		{% for group in groups %}
+			<div class="col p-0">
 				<div class="card bg-dark text-light m-4" style="width: 20rem; height: 16rem; border-radius: 10px;">
 					<div class="card-body">
 						<h5 class="card-title">{{ group.Name }}</h5>
-						<p class="card-text">{{ group.Description }}</p>
+						<p class="card-text">{{ group.Name }}</p>
 					</div>
 					<div class="card-body d-flex flex-row-reverse align-items-end">
 						<form method="post" action="{{ path('group_delete', {'id': group.id}) }}" onsubmit="return confirm('Na pewno chcesz usunąć tą grupę i wszystkie powiązane fiszki?');">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ group.id) }}">
 							<a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-primary m-1">Edytuj</a>
+							<a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-primary m-1">Fiszki</a>
 							<button class="btn btn-danger m-1">Usuń</button>
 						</form>
 					</div>
-                </div>
-				{% else %}
-					<tr>
-						<td colspan="3">no records found</td>
-					</tr>
-                    <a href="{{ path('group_new') }}">Create new</a>
-				{% endfor %}
+				</div>
 			</div>
-            <a href="{{ path('group_new') }}">Create new</a>
-		</div>
+		{% endfor %}
 	</div>
 {% endblock %}

@@ -9,18 +9,19 @@
 		</title>
 		{% block stylesheets %}
 			<link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+			<link rel="stylesheet" type="text/css" href="{{ asset('custom.css') }}">
 		{% endblock %}
 	</head>
 	<body>
 		<div class="container-fluid p-0">
-			<div class="row">
+			<div class="row w-100">
 				{% if menu|default %}
-				<div class="col-auto col-md-3 col-lg-2 vh-100" id="menu-container">
+				<div class="col-auto col-md-3 col-lg-2 vh-100 p-0" id="menu-container">
 				{% include('menu.html') %}
 				</div>
-				<div class="col-auto col-md-9 col-lg-10 vh-100 flex-fill">
+				<div class="col-auto col-md-9 col-lg-10 vh-100 p-4 flex-fill">
 				{% else %}
-				<div class="col-12 vh-100">
+				<div class="col-12 p-0 vh-100">
 				{% endif %}
 				{% block body %}
 				</div>
