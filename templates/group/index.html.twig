@@ -25,8 +25,8 @@
 					<div class="card-body d-flex flex-row-reverse align-items-end">
 						<form method="post" action="{{ path('group_delete', {'id': group.id}) }}" onsubmit="return confirm('Na pewno chcesz usunąć tą grupę i wszystkie powiązane fiszki?');">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ group.id) }}">
+							<a href="{{ path('flash_card_index', {'groupId': group.id}) }}" class="btn btn-primary m-1">Fiszki</a>
 							<a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-primary m-1">Edytuj</a>
-							<a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-primary m-1">Fiszki</a>
 							<button class="btn btn-danger m-1">Usuń</button>
 						</form>
 					</div>

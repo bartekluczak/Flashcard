@@ -27,6 +27,16 @@ class FlashCardRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByGroup($groupId)
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.GroupId = :val')
+            ->setParameter('val', $groupId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function find($id, $lockMode = null, $lockVersion = null)
     {
         return $this->createQueryBuilder('f')
