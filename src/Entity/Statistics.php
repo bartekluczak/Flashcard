@@ -19,14 +19,9 @@ class Statistics
 
     /**
      * @ORM\OneToOne(targetEntity=Flashcard::class, inversedBy="statistics")
-     * @ORM\JoinColumn(name="flashcard_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $FlashCardId;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="statistics")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")
      */
+
     private $GroupId;
 
     /**
@@ -42,18 +37,6 @@ class Statistics
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFlashCardId(): ?Flashcard
-    {
-        return $this->FlashCardId;
-    }
-
-    public function setFlashCardId(Flashcard $FlashCardId): self
-    {
-        $this->FlashCardId = $FlashCardId;
-
-        return $this;
     }
 
     public function getGroupId(): ?Group
