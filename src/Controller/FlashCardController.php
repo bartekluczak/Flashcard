@@ -6,6 +6,7 @@ use App\Entity\FlashCard;
 use App\Form\FlashCardType;
 use App\Repository\FlashCardRepository;
 use App\Repository\GroupRepository;
+use App\Helpers\MenuHelper;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,13 +15,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/group/{groupId}')]
 class FlashCardController extends AbstractController
-{ 
+{
+    private $menu;
+
+    function __construct()
+    {
+        $menuHelper = new MenuHelper();
+        $this->menu = $menuHelper->getMenu('Grupy');
+    }
     #[Route('/flashcard', name: 'flash_card_index', methods: ['GET'])]
     public function index(FlashCardRepository $flashCardRepository, GroupRepository $GroupRepository, $groupId): Response
     {
         return $this->render('flash_card/index.html.twig', [
             'flash_cards' => $flashCardRepository->findByGroup($groupId),
-            'groupId' => $groupId
+            'groupId' => $groupId,
+            'menu' => $this->menu
         ]);
     }
 
@@ -44,7 +53,8 @@ class FlashCardController extends AbstractController
         return $this->render('flash_card/new.html.twig', [
             'flash_card' => $flashCard,
             'form' => $form->createView(),
-            'groupId' => $groupId
+            'groupId' => $groupId,
+            'menu' => $this->menu
         ]);
     }
 
@@ -63,14 +73,15 @@ class FlashCardController extends AbstractController
         return $this->render('flash_card/edit.html.twig', [
             'flash_card' => $flashCard,
             'form' => $form->createView(),
-            'groupId' => $groupId
+            'groupId' => $groupId,
+            'menu' => $this->menu
         ]);
     }
 
     #[Route('/flashcard/{id}/delete', name: 'flash_card_delete', methods: ['POST'])]
     public function delete(Request $request, FlashCard $flashCard,  $groupId): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$flashCard->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $flashCard->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($flashCard);
             $entityManager->flush();
