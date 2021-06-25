@@ -1,36 +1,36 @@
 {% extends 'base.html.twig' %}
+{% set menu = menu %}
 
-{% block title %}FlashCard index{% endblock %}
+{% block title %}Fiszki
+{% endblock %}
 
 {% block body %}
-    <h1>FlashCard index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Content</th>
-                <th>Translation</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for flash_card in flash_cards %}
-            <tr>
-                <td>{{ flash_card.id }}</td>
-                <td>{{ flash_card.Content }}</td>
-                <td>{{ flash_card.Translation }}</td>
-                <td>
-                    <a href="{{ path('flash_card_edit', {'id': flash_card.id, 'groupId': flash_card.GroupId.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('flash_card_new', {groupId:  groupId}) }}">Create new</a>
+	<h1 class="mb-4 view-header">Fiszki</h1>
+	<div class="row row-cols-auto container-boxes">
+		<div class="col p-0">
+			<div class="card bg-dark text-light m-4 add-card" style="width: 20rem; height: 16rem; border-radius: 10px;">
+				<a href="{{ path('flash_card_new', {'groupId': groupId}) }}" class="card-body d-flex align-content-center add-button">
+					<img src="{{ asset('plus-icon.svg') }}" class="align-self-center flex-fill plus-icon" style="width: 12rem; height: 12rem;"/>
+				</a>
+			</div>
+		</div>
+		{% for flashcard in flash_cards %}
+			<div class="col p-0">
+				<div class="card bg-dark text-light m-4" style="width: 20rem; height: 16rem; border-radius: 10px;">
+					<div class="card-body">
+						<h1 class="card-title text-center pt-5">{{ flashcard.Content }}</h1>
+						<h3 class="card-text text-center">{{ flashcard.Translation }}</h3>
+					</div>
+					<div class="card-body d-flex flex-row-reverse align-items-end">
+						<form method="post" action="{{ path('flash_card_delete', {'id': flashcard.id, 'groupId': groupId}) }}" onsubmit="return confirm('Na pewno chcesz usunąć tę fiszkę?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ flashcard.id) }}">
+							<a href="{{ path('flash_card_edit', {'id': flashcard.id, 'groupId': groupId}) }}" class="btn btn-primary m-1">Edytuj</a>
+							<button class="btn btn-danger m-1">Usuń</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<a href="{{ path('group_index') }}" class="btn btn-primary m-1 group-return">Powrót</a>
 {% endblock %}

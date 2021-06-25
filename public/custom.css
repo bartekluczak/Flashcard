@@ -56,6 +56,18 @@
     filter: invert(25%) sepia(9%) saturate(1168%) hue-rotate(181deg) brightness(95%) contrast(85%);
 }
 
+.group-return {
+    position: fixed;
+    padding: 0.7rem;
+    top: 1.5rem;
+    right: 2rem;
+    z-index: 99;
+}
+
+.view-header {
+    z-index: 99;
+}
+
 @media only screen and (min-width: 767px) {
     .menu {
         background-color: #2f3847;
@@ -63,6 +75,14 @@
 }
 
 @media only screen and (max-width: 767px) {
+    .view-header {
+        position: fixed;
+    }
+
+    .add-card{
+        margin-top: 130px !important;
+    }
+
     .floating-menu {
         width: 100% !important;
         bottom: initial;
