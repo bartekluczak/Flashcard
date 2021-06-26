@@ -69,21 +69,17 @@ class SessionController extends AbstractController
             ->getForm();
         $flashcardShow->handleRequest($request);
 
-        if ($flashcardShow->isSubmitted() && $flashcardShow->isValid())
-        {
+        if ($flashcardShow->isSubmitted() && $flashcardShow->isValid()) {
 
             $lastFlashcardId = $flashcardShow["checkId"]->getData();
             $lastFlashcard = $flashCardRepository->find($lastFlashcardId);
             $lastFlashcardTranslation = strtolower($lastFlashcard->getTranslation());
-            
+
             $answer = strtolower($flashcardShow["answer"]->getData());
 
-            if($answer == $lastFlashcardTranslation)
-            {
+            if ($answer == $lastFlashcardTranslation) {
                 $session->increaseCorrectCount();
-            }
-            else
-            {
+            } else {
                 $session->increaseIncorrectCount();
             }
 

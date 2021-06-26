@@ -10,14 +10,7 @@
             </div>
             {% endif %}
 
-            {% if app.user %}
-            <div class="mb-3">
-                Jesteś zalogowany jako {{ app.user.login }}, <a href="{{ path('app_logout') }}">Wyloguj</a>
-                Lub przejdź do <a href='/group'> nauki</a>
-            </div>
-            {% endif %}
-            {% if not app.user %}
-            
+           
             <h1 class="row justify-content-center h3 mb-3 mt-5 font-weight-normal">Zaloguj się</h1>
         
             <div class="row justify-content-center">
@@ -37,7 +30,6 @@
                     <a href="/register" class="btn btn-primary"> Rejestracja</a>
                     </div>
             </div>
-            {% endif %}
     </form>
 {% endblock %}
   

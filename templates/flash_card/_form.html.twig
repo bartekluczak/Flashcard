@@ -7,7 +7,7 @@
 	<h6>Tłumaczenie</h6>
 	{{ form_widget(form.Translation, { 'attr': {'class': 'form-control'} }) }}
 </div>
-<button class="btn btn-primary" style="width: 300px; margin: 5px;">{{ button_label|default('Save') }}</button>
+<button class="btn btn-primary" style="width: 300px; margin: 5px;">{{ button_label|default('Zapisz') }}</button>
 </br>
 <a class="btn btn-primary" style="width: 300px; margin: 5px;" href="{{ path('flash_card_index', {groupId: groupId}) }}">Powrót</a>
 {{ form_end(form) }}
