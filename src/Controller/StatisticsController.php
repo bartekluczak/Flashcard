@@ -28,8 +28,9 @@ class StatisticsController extends AbstractController
         $allSessionStatistics = $sessionRepository->getAllStatistics();
 
         $allAnswers = $allSessionStatistics->getCorrectCount() + $allSessionStatistics->getIncorrectCount();
+       
         $percentCorrectAnswers = ($allSessionStatistics->getCorrectCount() / $allAnswers) * 100;
-
+        
         return $this->render('statistics/index.html.twig', [
             'controller_name' => 'StatisticsController',
             'allSessionStatistics' => $allSessionStatistics,
