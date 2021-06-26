@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ session.id }}</td>
-            </tr>
-            <tr>
                 <th>CorrectCount</th>
                 <td>{{ session.correctCount }}</td>
             </tr>
@@ -20,15 +16,12 @@
                 <td>{{ session.incorrectCount }}</td>
             </tr>
             <tr>
-                <th>IncorrectCount</th>
-                <td>{{ session.groupId.id }}</td>
+                <th>Group</th>
+                <td>{{ session.groupId.Name }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('session_index') }}">back to list</a>
-
-    <a href="{{ path('session_edit', {'id': session.id}) }}">edit</a>
-
-    {{ include('session/_delete_form.html.twig') }}
+    <a href="{{ path('session_new') }}">Wróć do wyboru grupy</a>
+     {{ include('session/_sessionplay.html.twig') }}
 {% endblock %}

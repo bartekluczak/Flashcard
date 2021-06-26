@@ -18,12 +18,12 @@ class Session
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
      */
     private $correctCount;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
      */
     private $incorrectCount;
 
@@ -50,9 +50,19 @@ class Session
         return $this;
     }
 
+    public function increaseCorrectCount()
+    {
+        $this->correctCount++;
+    }
+
     public function getIncorrectCount(): ?int
     {
         return $this->incorrectCount;
+    }
+
+    public function increaseIncorrectCount()
+    {
+        $this->incorrectCount++;
     }
 
     public function setIncorrectCount(?int $incorrectCount): self

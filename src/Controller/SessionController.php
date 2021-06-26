@@ -8,11 +8,15 @@ use App\Form\SessionType;
 use App\Repository\SessionRepository;
 use App\Repository\FlashCardRepository;
 use App\Helpers\MenuHelper;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 #[Route('/session')]
 class SessionController extends AbstractController
@@ -25,15 +29,6 @@ class SessionController extends AbstractController
         $this->menu = $menuHelper->getMenu('Nauka');
     }
 
-    #[Route('/showall', name: 'session_index', methods: ['GET'])]
-    public function index(SessionRepository $sessionRepository): Response
-    {
-        return $this->render('session/index.html.twig', [
-            'sessions' => $sessionRepository->findAll(),
-            'menu' => $this->menu
-        ]);
-    }
-
     #[Route('/', name: 'session_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -42,6 +37,8 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $session->setCorrectCount(0);
+            $session->setIncorrectCount(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
             $entityManager->flush();
@@ -56,46 +53,49 @@ class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'session', methods: ['GET'])]
-    public function show(FlashCardRepository $flashCardRepository, SessionRepository $sessionRepository, Session $session): Response
+    #[Route('/{id}', name: 'session', methods: ['GET', 'POST'])]
+    public function show(Request $request, FlashCardRepository $flashCardRepository, SessionRepository $sessionRepository, Session $session): Response
     {
-        //$flashCardRepository = new FlashCardRepository($ManagerRegistry);
+        $flascard = $flashCardRepository->find($sessionRepository->getRandomFlashCardId($session->getGroupId()));
+
+        $defaultData = ['flashcard' => $flascard->getContent(), 'checkId' => $flascard->getId()];
+        $flashcardShow = $this->createFormBuilder($defaultData)
+            ->add('flashcard', TextType::class, [
+                'disabled' => true
+            ])
+            ->add('answer', TextType::class)
+            ->add('send', SubmitType::class)
+            ->add('checkId', HiddenType::class)
+            ->getForm();
+        $flashcardShow->handleRequest($request);
+
+        if ($flashcardShow->isSubmitted() && $flashcardShow->isValid())
+        {
+
+            $lastFlashcardId = $flashcardShow["checkId"]->getData();
+            $lastFlashcard = $flashCardRepository->find($lastFlashcardId);
+            $lastFlashcardTranslation = strtolower($lastFlashcard->getTranslation());
+            
+            $answer = strtolower($flashcardShow["answer"]->getData());
+
+            if($answer == $lastFlashcardTranslation)
+            {
+                $session->increaseCorrectCount();
+            }
+
+            $session->increaseIncorrectCount();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($session);
+            $entityManager->flush();
+            return $this->redirectToRoute('session', ['id' => $session->getId()]);
+        }
 
         return $this->render('session/show.html.twig', [
             'session' => $session,
-            'flashcard' => $flashCardRepository->find($sessionRepository->getRandomFlashCardId($session->getGroupId())),
+            'flashcard' => $flascard,
+            'flashcardShow' => $flashcardShow->createView(),
             'menu' => $this->menu
         ]);
-    }
-
-    #[Route('/{id}/edit', name: 'session_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Session $session): Response
-    {
-        $form = $this->createForm(SessionType::class, $session);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('session_index');
-        }
-
-        return $this->render('session/edit.html.twig', [
-            'session' => $session,
-            'form' => $form->createView(),
-            'menu' => $this->menu
-        ]);
-    }
-
-    #[Route('/{id}', name: 'session_delete', methods: ['POST'])]
-    public function delete(Request $request, Session $session): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $session->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($session);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('session_index');
     }
 }
