@@ -21,7 +21,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'constraints' => [
-                    'message' => 'Niepoprawny e-mail'
+                    new Email(['message' => 'Niepoprawny e-mail'])
                 ],
             ])
             ->add('login')
@@ -29,7 +29,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Musisz zaakceptować regulamin',
                     ]),
                 ],
             ])

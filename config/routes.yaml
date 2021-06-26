@@ -1,3 +1,6 @@
 #index:
 #    path: /
-#    controller: App\Controller\DefaultController::index
+#    controller: App\Controller\GroupController::index
+homepage:
+    path:   /
+    controller: App\Controller\GroupController::index

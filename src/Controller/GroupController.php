@@ -24,6 +24,8 @@ class GroupController extends AbstractController
     #[Route('/', name: 'group_index', methods: ['GET'])]
     public function index(GroupRepository $groupRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
         return $this->render('group/index.html.twig', [
             'groups' => $groupRepository->findAll(),
             'menu' => $this->menu
