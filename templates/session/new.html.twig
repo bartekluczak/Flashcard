@@ -3,6 +3,10 @@
 {% block title %}Nowa sesja{% endblock %}
 
 {% block body %}
+<div class="d-flex .flex-row justify-content-center align-items-center w-100 h-100">
+    <div>
     <h1>Nowa sesja</h1>
     {{ include('session/_form.html.twig') }}
+    </div>
+</div>
 {% endblock %}

@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Now grupa{% endblock %}
+{% block title %}Now grupa
+{% endblock %}
 
 {% block body %}
-    <h1>Nowa grupa</h1>
-
-    {{ include('group/_form.html.twig') }}
-
-    <a class="btn btn-primary" style="width: 300px; margin: 5px;" href="{{ path('group_index') }}">Powrót</a>
+	<div class="d-flex .flex-row justify-content-center align-items-center w-100 h-100">
+		<div>
+			<h1>Nowa grupa</h1>
+			{{ include('group/_form.html.twig') }}
+			<a class="btn btn-primary" style="width: 300px; margin: 5px;" href="{{ path('group_index') }}">Powrót</a>
+		</div>
+	</div>
 {% endblock %}

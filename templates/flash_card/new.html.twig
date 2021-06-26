@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New FlashCard{% endblock %}
+{% block title %}New FlashCard
+{% endblock %}
 
 {% block body %}
-    <h1>Create new FlashCard</h1>
-
-    {{ include('flash_card/_form.html.twig') }}
-
-    <a href="{{ path('flash_card_index', {'groupId': groupId}) }}">back to list</a>
+	<div class="d-flex .flex-row justify-content-center align-items-center w-100 h-100">
+		<div>
+			<h1>Nowa Fiszka</h1>
+			{{ include('flash_card/_form.html.twig') }}
+		</div>
+	</div>
 {% endblock %}

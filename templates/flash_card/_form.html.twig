@@ -1,4 +1,13 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div style="width: 300px; margin-left: 5px; margin-bottom: 10px;">
+	<h6>Fiszka</h6>
+	{{ form_widget(form.Content, { 'attr': {'class': 'form-control'} }) }}
+</div>
+<div style="width: 300px; margin-left: 5px; margin-bottom: 10px;">
+	<h6>Tłumaczenie</h6>
+	{{ form_widget(form.Translation, { 'attr': {'class': 'form-control'} }) }}
+</div>
+<button class="btn btn-primary" style="width: 300px; margin: 5px;">{{ button_label|default('Save') }}</button>
+</br>
+<a class="btn btn-primary" style="width: 300px; margin: 5px;" href="{{ path('flash_card_index', {groupId: groupId}) }}">Powrót</a>
 {{ form_end(form) }}

@@ -14,7 +14,6 @@ class FlashCardType extends AbstractType
         $builder
             ->add('Content')
             ->add('Translation')
-            ->add('GroupId')
         ;
     }
 
