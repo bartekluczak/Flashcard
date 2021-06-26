@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Session;
 use App\Entity\FlashCard;
 use App\Entity\Group;
+use App\DTO\AllSessionStatistics;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,10 +48,32 @@ class SessionRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function getAllStatistics(): AllSessionStatistics
+    {
+        $entityManager = $this->getEntityManager();
+        $queryResult = $entityManager->createQueryBuilder()
+            ->select('s.correctCount, s.incorrectCount')
+            ->from('App:Session', 's')
+            ->getQuery()
+            ->getResult();
+
+        $result = array('correctCount' => 0, 'incorrectCount' => 0);
+        foreach ($queryResult as $row) {
+            $result['correctCount'] += $row['correctCount'];
+            $result['incorrectCount'] += $row['incorrectCount'];
+        }
+
+        $statistics = new AllSessionStatistics(0, 0);
+        $statistics->setCorrectCount($result['correctCount']);
+        $statistics->setIncorrectCount($result['incorrectCount']);
+
+        return  $statistics;
+    }
+
     public function getMaxFlasCardIdForGroup($groupId): ?int
     {
-        $entityManager = $this->getEntityManager()->createQueryBuilder();
-        $result = $entityManager
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQueryBuilder()
             ->select('f.id')
             ->from('App:FlashCard', 'f')
             ->where('f.GroupId = :groupId')
@@ -67,8 +90,8 @@ class SessionRepository extends ServiceEntityRepository
     {
         $groupId = $group->getId();
 
-        $entityManager = $this->getEntityManager()->createQueryBuilder();
-        $result = $entityManager
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQueryBuilder()
             ->select(array('f.id'))
             ->from('App:FlashCard', 'f')
             ->where('f.GroupId = :groupId')

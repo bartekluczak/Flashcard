@@ -24,7 +24,7 @@ class FlashCardController extends AbstractController
         $this->menu = $menuHelper->getMenu('Grupy');
     }
     #[Route('/flashcard', name: 'flash_card_index', methods: ['GET'])]
-    public function index(FlashCardRepository $flashCardRepository, GroupRepository $GroupRepository, $groupId): Response
+    public function index(FlashCardRepository $flashCardRepository, $groupId): Response
     {
         return $this->render('flash_card/index.html.twig', [
             'flash_cards' => $flashCardRepository->findByGroup($groupId),
