@@ -82,8 +82,11 @@ class SessionController extends AbstractController
             {
                 $session->increaseCorrectCount();
             }
+            else
+            {
+                $session->increaseIncorrectCount();
+            }
 
-            $session->increaseIncorrectCount();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
