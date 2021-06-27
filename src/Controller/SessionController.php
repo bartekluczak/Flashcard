@@ -10,6 +10,7 @@ use App\Repository\FlashCardRepository;
 use App\Helpers\MenuHelper;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\GroupRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[Route('/session')]
 class SessionController extends AbstractController
@@ -30,13 +32,19 @@ class SessionController extends AbstractController
     }
 
     #[Route('/', name: 'session_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, ManagerRegistry $managerRegistry): Response
     {
         $session = new Session();
         $form = $this->createForm(SessionType::class, $session);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /*
+            $groupRepository = new GroupRepository($managerRegistry);
+            $flashCardCountForSessionGroup = $groupRepository->getFlasCardCountForGroup($session->getGroupId());
+
+            return $this->redirectToRoute('session_error');
+            */
             $session->setCorrectCount(0);
             $session->setIncorrectCount(0);
             $entityManager = $this->getDoctrine()->getManager();
@@ -69,21 +77,17 @@ class SessionController extends AbstractController
             ->getForm();
         $flashcardShow->handleRequest($request);
 
-        if ($flashcardShow->isSubmitted() && $flashcardShow->isValid())
-        {
+        if ($flashcardShow->isSubmitted() && $flashcardShow->isValid()) {
 
             $lastFlashcardId = $flashcardShow["checkId"]->getData();
             $lastFlashcard = $flashCardRepository->find($lastFlashcardId);
             $lastFlashcardTranslation = strtolower($lastFlashcard->getTranslation());
-            
+
             $answer = strtolower($flashcardShow["answer"]->getData());
 
-            if($answer == $lastFlashcardTranslation)
-            {
+            if ($answer == $lastFlashcardTranslation) {
                 $session->increaseCorrectCount();
-            }
-            else
-            {
+            } else {
                 $session->increaseIncorrectCount();
             }
 
@@ -98,6 +102,14 @@ class SessionController extends AbstractController
             'session' => $session,
             'flashcard' => $flascard,
             'flashcardShow' => $flashcardShow->createView(),
+            'menu' => $this->menu
+        ]);
+    }
+
+    #[Route('/error', name: 'session_error', methods: ['GET'])]
+    public function error(Session $session)
+    {
+        return $this->render('session/error.html.twig', [
             'menu' => $this->menu
         ]);
     }

@@ -47,4 +47,19 @@ class GroupRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getFlasCardCountForGroup($groupId): ?int
+    {
+        $entityManager = $this->getEntityManager();
+        $queryResult = $entityManager->createQueryBuilder()
+            ->select('COUNT(f.id)')
+            ->from('App:FlashCard', 'f')
+            ->where('f.GroupId = :groupId')
+            ->setParameter('groupId', $groupId)
+            ->getQuery()
+            ->getResult();
+
+        $result = $queryResult[0][1];
+        return $result;
+    }
 }

@@ -69,23 +69,7 @@ class SessionRepository extends ServiceEntityRepository
 
         return  $statistics;
     }
-
-    public function getMaxFlasCardIdForGroup($groupId): ?int
-    {
-        $entityManager = $this->getEntityManager();
-        $result = $entityManager->createQueryBuilder()
-            ->select('f.id')
-            ->from('App:FlashCard', 'f')
-            ->where('f.GroupId = :groupId')
-            ->orderBy('f.id', 'DESC')
-            ->setMaxResults(1)
-            ->setParameter('groupId', $groupId)
-            ->getQuery()
-            ->getResult();
-
-        return $result[0]['id'];
-    }
-
+    
     public function getRandomFlashCardId(Group $group): ?int
     {
         $groupId = $group->getId();

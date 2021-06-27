@@ -34,9 +34,9 @@ class FlashCardController extends AbstractController
     }
 
     #[Route('/flashcard/new', name: 'flash_card_new', methods: ['GET', 'POST'])]
-    public function new(ManagerRegistry $ManagerRegistry, Request $request, $groupId): Response
+    public function new(ManagerRegistry $managerRegistry, Request $request, $groupId): Response
     {
-        $groupRepository = new GroupRepository($ManagerRegistry);
+        $groupRepository = new GroupRepository($managerRegistry);
         $flashCard = new FlashCard();
         $flashCard->setGroupId($groupRepository->find($groupId));
         $form = $this->createForm(FlashCardType::class, $flashCard);

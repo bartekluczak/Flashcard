@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% set menu = menu %}
+
+{% block title %}Session index
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex .flex-row justify-content-center align-items-center w-100 h-100">
+		<div>
+			<h1>Bład</h1>
+            <h3>Grupa musi mieć przynajmniej 10 fiszek aby rozpocząć sesje!"
+			<a class="btn btn-primary" href="{{ path('session_new') }}">Powrót</a>
+		</div>
+	</div>
+{% endblock %}
