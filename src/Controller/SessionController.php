@@ -42,11 +42,12 @@ class SessionController extends AbstractController
             
             $groupRepository = new GroupRepository($managerRegistry);
             $flashCardCountForSessionGroup = $groupRepository->getFlasCardCountForGroup($session->getGroupId());
-
-            if($flashCardCountForSessionGroup < 10);
-            return $this->render('session/error.html.twig', [
-                'menu' => $this->menu
-            ]);
+            //throw new \Exception($flashCardCountForSessionGroup);
+            if($flashCardCountForSessionGroup < 10){
+                return $this->render('session/error.html.twig', [
+                    'menu' => $this->menu
+                ]);
+            }
             
             $session->setCorrectCount(0);
             $session->setIncorrectCount(0);
