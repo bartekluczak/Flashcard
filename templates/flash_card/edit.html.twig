@@ -1,16 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edycja fiszek{% endblock %}
+{% block title %}Edycja fiszek
+{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <h1 class="row justify-content-center mt-5 mb-4 font-weight-normal">Edytuj fiszkę</h1>
-    <div class="row justify-content-center">
-        <div class="col col-lg-6 col-md-9 col-sm-12">
-        {{ include('flash_card/_form.html.twig', {'button_label': 'Popraw'}) }}
-        <a href="{{ path('flash_card_index', { 'groupId': groupId }) }}">Powrót</a>
-        {{ include('flash_card/_delete_form.html.twig') }}
-        </div>
-    </div>
-</div>
+	<div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+		<div>
+			<h1>Edytuj Fiszkę</h1>
+			{{ include('flash_card/_form.html.twig', {'button_label': 'Popraw'}) }}
+		</div>
+	</div>
 {% endblock %}
