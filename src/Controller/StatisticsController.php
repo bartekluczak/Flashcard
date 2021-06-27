@@ -26,8 +26,13 @@ class StatisticsController extends AbstractController
     {
         $sessionRepository = new SessionRepository($ManagerRegistry);
         $allSessionStatistics = $sessionRepository->getAllStatistics();
-
         $allAnswers = $allSessionStatistics->getCorrectCount() + $allSessionStatistics->getIncorrectCount();
+
+        if($allAnswers == 0){
+            return $this->render('statistics/error.html.twig', [
+                'menu' => $this->menu,
+            ]);
+        }
        
         $percentCorrectAnswers = ($allSessionStatistics->getCorrectCount() / $allAnswers) * 100;
         
@@ -37,7 +42,6 @@ class StatisticsController extends AbstractController
             'allAnswers' => $allAnswers,
             'percentCorrectAnswers' => $percentCorrectAnswers,
             'menu' => $this->menu,
-
         ]);
     }
 }

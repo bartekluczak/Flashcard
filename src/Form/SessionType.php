@@ -19,7 +19,7 @@ class SessionType extends AbstractType
             ->add('groupId', EntityType::class, [
                 'class' => Group::class,
                 'constraints' => [
-                    new NotNull(['message' => 'Niepoprawny e-mail'])
+                    new NotNull(['message' => 'Brak grupy!'])
                 ],
             ]);
     }
