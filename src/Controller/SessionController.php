@@ -39,12 +39,15 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /*
+            
             $groupRepository = new GroupRepository($managerRegistry);
             $flashCardCountForSessionGroup = $groupRepository->getFlasCardCountForGroup($session->getGroupId());
 
-            return $this->redirectToRoute('session_error');
-            */
+            if($flashCardCountForSessionGroup < 10);
+            return $this->render('session/error.html.twig', [
+                'menu' => $this->menu
+            ]);
+            
             $session->setCorrectCount(0);
             $session->setIncorrectCount(0);
             $entityManager = $this->getDoctrine()->getManager();

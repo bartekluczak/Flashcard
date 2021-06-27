@@ -4,11 +4,11 @@
 {% endblock %}
 
 {% block body %}
-	<div class="p-3">
-		<h1 class="mb-5">Edytuj Grupę</h1>
-
-		{{ include('group/_form.html.twig', {'button_label': 'Zapisz'}) }}
-
-		<a class="btn btn-primary" style="width: 300px; margin: 5px;" href="{{ path('group_index') }}">Powrót</a>
+	<div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+		<div>
+			<h1>Edytuj Grupę</h1>
+			{{ include('group/_form.html.twig', {'button_label': 'Zapisz'}) }}
+			<a class="btn btn-primary" style="width: 300px; margin: 5px;" href="{{ path('group_index') }}">Powrót</a>
+		</div>
 	</div>
 {% endblock %}

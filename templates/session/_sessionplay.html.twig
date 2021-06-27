@@ -1,12 +1,23 @@
 {{ form_start(flashcardShow, {'action': path('session', {id: session.id})}) }}
-    <div style="width: 300px; margin-left: 5px; margin-bottom: 10px;">
-        {{ form_widget(flashcardShow.flashcard, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-    <div style="width: 300px; margin-left: 5px; margin-bottom: 10px;">
-        {{ form_widget(flashcardShow.answer, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-     <div style="width: 300px; margin-left: 5px; margin-bottom: 10px;">
-         {{ form_widget(flashcardShow.send, { 'attr': {'class': 'form-control'}, 'label' : 'Sprawdź' }) }}
-    </div>
-    {{ form_widget(flashcardShow.checkId) }}     
+<div class="row justify-content-center">
+	<div class="col col-lg-6 col-md-9 col-sm-12">
+		{{ form_start(flashcardShow, {'action': path('session', {id: session.id})}) }}
+		<div style="width: 300px; margin-left: auto; margin-right:auto; margin-bottom: 10px;">
+            <h6>Fiszka</h6>
+			{{ form_widget(flashcardShow.flashcard, { 'attr': {'class': 'form-control flashcard-content'} }) }}
+		</div>
+		<div style="width: 300px; margin-left: auto; margin-right:auto; margin-bottom: 10px;">
+            <h6>Odpowiedź</h6>
+			{{ form_widget(flashcardShow.answer, { 'attr': {'class': 'form-control'} }) }}
+		</div>
+		<div style="width: 300px; margin-left: auto; margin-right:auto; margin-bottom: 10px;">
+			{{ form_widget(flashcardShow.send, { 'attr': {'class': 'form-control btn-primary'}, 'label' : 'Sprawdź' }) }}
+		</div>
+		{{ form_widget(flashcardShow.checkId) }}
+		<div style="width: 300px; margin-left: auto; margin-right:auto; margin-bottom: 10px;">
+			<a class="btn btn-primary" style="width: 100%" href="{{ path('session_new') }}">Powrót</a>
+		</div>
+	</div>
+
+</div>
 {{ form_end(flashcardShow) }}

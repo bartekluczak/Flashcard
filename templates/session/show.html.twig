@@ -1,34 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Session{% endblock %}
+{% block title %}Session
+{% endblock %}
 
 {% block body %}
- <div class="container-fluid">
-    <div class="row justify-content-center mb-2 mt-2">   
-        <div class="col col-lg-6 col-md-9 col-sm-12">
-            <h1 class="row justify-content-center mt-5 mb-4 font-weight-normal">Nauka</h1>
+	<div class="container-fluid">
+		<div class="row justify-content-center mb-2 mt-2">
+			<div class="col col-lg-6 col-md-9 col-sm-12">
+				<h1 class="row justify-content-center mt-5 mb-4 font-weight-normal">Nauka</h1>
 
-            <table class="table mb-5">
-                <tbody>
-                    <tr>
-                        <th>Poprawne odpowiedzi</th>
-                        <td>{{ session.correctCount }}</td>
-                    </tr>
-                    <tr>
-                        <th>Niepoprawne odpowiedzi</th>
-                        <td>{{ session.incorrectCount }}</td>
-                    </tr>
-                    <tr>
-                        <th>Grupa</th>
-                        <td>{{ session.groupId.Name }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <div class="row justify-content-center">
-            {{ include('session/_sessionplay.html.twig') }}
-            <a class="btn btn-primary col-lg-3 col-md-6 col-sm-12 mt-3" href="{{ path('session_new') }}">Powrót</a>
-    </div>
-{% endblock %}
+				<table class="table mb-5">
+					<tbody>
+						<tr>
+							<th>Poprawne odpowiedzi</th>
+							<td>{{ session.correctCount }}</td>
+						</tr>
+						<tr>
+							<th>Niepoprawne odpowiedzi</th>
+							<td>{{ session.incorrectCount }}</td>
+						</tr>
+						<tr>
+							<th>Grupa</th>
+							<td>{{ session.groupId.Name }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col-lg-3 col-md-6 col-sm-12 mt-3">
+				{{ include('session/_sessionplay.html.twig') }}
+				
+			</div>
+		</div>
+	{% endblock %}

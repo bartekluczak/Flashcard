@@ -68,6 +68,10 @@
     z-index: 99;
 }
 
+.flashcard-content{
+    text-align: center !important;
+}
+
 @media only screen and (min-width: 767px) {
     .menu {
         background-color: #2f3847;
