@@ -25,7 +25,7 @@
 						<form method="post" action="{{ path('flash_card_delete', {'id': flashcard.id, 'groupId': groupId}) }}" onsubmit="return confirm('Na pewno chcesz usunąć tę fiszkę?');">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ flashcard.id) }}">
 							<a href="{{ path('flash_card_edit', {'id': flashcard.id, 'groupId': groupId}) }}" class="btn btn-primary m-1">Edytuj</a>
-							<button class="btn btn-danger m-1">Usuń</button>
+							<a class="btn btn-primary m-1">Usuń</a>
 						</form>
 					</div>
 				</div>
