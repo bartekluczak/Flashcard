@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Form\Form;
 
 #[Route('/session')]
 class SessionController extends AbstractController
@@ -40,22 +41,14 @@ class SessionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $groupRepository = new GroupRepository($managerRegistry);
-            $flashCardCountForSessionGroup = $groupRepository->getFlasCardCountForGroup($session->getGroupId());
-            //throw new \Exception($flashCardCountForSessionGroup);
-            if($flashCardCountForSessionGroup < 10){
-                return $this->render('session/error.html.twig', [
-                    'menu' => $this->menu
-                ]);
-            }
-            
-            $session->setCorrectCount(0);
-            $session->setIncorrectCount(0);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($session);
-            $entityManager->flush();
+            if($this->validateGroup($managerRegistry, $session, 10) == true){
 
-            return $this->redirectToRoute('session', ['id' => $session->getId()]);
+                return  $this->redirectToRoute('session', ['id' => $session->getId()]);
+            }
+
+            return  $this->render('session/error.html.twig', [
+                'menu' =>  $this->menu
+            ]);
         }
 
         return $this->render('session/new.html.twig', [
@@ -63,6 +56,22 @@ class SessionController extends AbstractController
             'form' => $form->createView(),
             'menu' => $this->menu
         ]);
+    }
+
+    private function validateGroup(ManagerRegistry $managerRegistry, Session $session, int $groupCount){
+            $groupRepository = new GroupRepository($managerRegistry);
+            $flashCardCountForSessionGroup = $groupRepository->getFlasCardCountForGroup($session->getGroupId());
+            if($flashCardCountForSessionGroup < $groupCount){
+                return false;
+            }
+            
+            $session->setCorrectCount(0);
+            $session->setIncorrectCount(0);
+            $entityManager =  $this->getDoctrine()->getManager();
+            $entityManager->persist($session);
+            $entityManager->flush();
+
+            return true;
     }
 
     #[Route('/{id}', name: 'session', methods: ['GET', 'POST'])]
@@ -79,26 +88,13 @@ class SessionController extends AbstractController
             ->add('send', SubmitType::class)
             ->add('checkId', HiddenType::class)
             ->getForm();
+
         $flashcardShow->handleRequest($request);
 
         if ($flashcardShow->isSubmitted() && $flashcardShow->isValid()) {
 
-            $lastFlashcardId = $flashcardShow["checkId"]->getData();
-            $lastFlashcard = $flashCardRepository->find($lastFlashcardId);
-            $lastFlashcardTranslation = strtolower($lastFlashcard->getTranslation());
+            $this->checkAnswer($flashcardShow, $flashCardRepository, $session);
 
-            $answer = strtolower($flashcardShow["answer"]->getData());
-
-            if ($answer == $lastFlashcardTranslation) {
-                $session->increaseCorrectCount();
-            } else {
-                $session->increaseIncorrectCount();
-            }
-
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($session);
-            $entityManager->flush();
             return $this->redirectToRoute('session', ['id' => $session->getId()]);
         }
 
@@ -108,6 +104,24 @@ class SessionController extends AbstractController
             'flashcardShow' => $flashcardShow->createView(),
             'menu' => $this->menu
         ]);
+    }
+
+    private function checkAnswer(Form $form, FlashCardRepository $flashCardRepository, Session $session){
+        $lastFlashcardId = $form["checkId"]->getData();
+        $lastFlashcard = $flashCardRepository->find($lastFlashcardId);
+        $lastFlashcardTranslation = strtolower($lastFlashcard->getTranslation());
+
+        $answer = strtolower($form["answer"]->getData());
+
+        if ($answer == $lastFlashcardTranslation) {
+            $session->increaseCorrectCount();
+        } else {
+            $session->increaseIncorrectCount();
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($session);
+        $entityManager->flush();
     }
 
     #[Route('/error', name: 'session_error', methods: ['GET'])]
